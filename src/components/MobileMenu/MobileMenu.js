@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import styled from 'styled-components/macro';
-import { DialogOverlay, DialogContent } from '@reach/dialog';
+import React from "react";
+import styled, { keyframes } from "styled-components/macro";
+import { DialogOverlay, DialogContent } from "@reach/dialog";
 
-import { QUERIES, WEIGHTS } from '../../constants';
+import { QUERIES, WEIGHTS } from "../../constants";
 
-import UnstyledButton from '../UnstyledButton';
-import Icon from '../Icon';
-import VisuallyHidden from '../VisuallyHidden';
+import UnstyledButton from "../UnstyledButton";
+import Icon from "../Icon";
+import VisuallyHidden from "../VisuallyHidden";
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
@@ -36,6 +36,15 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
   );
 };
 
+const fadeIn = keyframes`
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  `;
+
 const Overlay = styled(DialogOverlay)`
   position: fixed;
   top: 0;
@@ -45,21 +54,37 @@ const Overlay = styled(DialogOverlay)`
   background: var(--color-backdrop);
   display: flex;
   justify-content: flex-end;
+  animation: ${fadeIn} 0.3s;
 `;
 
+const slideInFromRight = keyframes`
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  `;
+
 const Content = styled(DialogContent)`
+  --overfill: 16px;
   background: white;
-  width: 300px;
+  width: calc(300px + var(--overfill));
+  margin-right: calc(-1 * var(--overfill));
   height: 100%;
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  animation: ${slideInFromRight} 0.3s both cubic-bezier(0.57, 0.21, 0.64, 1.14);
+  animation-delay: 0.2s;
 `;
 
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
-  top: 10px;
-  right: 0;
+  top: 0px;
+  right: var(--overfill);
   padding: 16px;
 `;
 
@@ -75,6 +100,9 @@ const NavLink = styled.a`
   text-decoration: none;
   font-size: 1.125rem;
   text-transform: uppercase;
+
+  animation: ${fadeIn} 1.5s both;
+  animation-delay: 0.4s;
 
   &:first-of-type {
     color: var(--color-secondary);
@@ -96,6 +124,9 @@ const SubLink = styled.a`
   color: var(--color-gray-700);
   font-size: 0.875rem;
   text-decoration: none;
+
+  animation: ${fadeIn} 1.5s both;
+  animation-delay: 0.6s;
 `;
 
 export default MobileMenu;
